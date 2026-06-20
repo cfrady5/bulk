@@ -1,4 +1,6 @@
-import * as FileSystem from 'expo-file-system';
+// SDK 54+ moved the classic read/write API (writeAsStringAsync, documentDirectory,
+// EncodingType, …) to the "/legacy" entry point. We use that stable API here.
+import * as FileSystem from 'expo-file-system/legacy';
 
 /**
  * Persist a CSV string to a file using expo-file-system.

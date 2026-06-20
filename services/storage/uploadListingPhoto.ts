@@ -1,4 +1,5 @@
-import * as FileSystem from 'expo-file-system';
+// SDK 54+ moved readAsStringAsync / EncodingType to the "/legacy" entry point.
+import * as FileSystem from 'expo-file-system/legacy';
 
 import { APP_CONFIG } from '@/constants/config';
 import { base64ToUint8Array } from '@/lib/base64';

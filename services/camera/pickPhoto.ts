@@ -34,7 +34,7 @@ export async function takePhotoWithSystemCamera(role: PhotoRole): Promise<Pendin
   }
 
   const result = await ImagePicker.launchCameraAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    mediaTypes: ['images'],
     quality: APP_CONFIG.captureQuality,
     allowsEditing: false,
     exif: false,
@@ -59,7 +59,7 @@ export async function pickPhotoFromLibrary(role: PhotoRole): Promise<PendingPhot
   }
 
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    mediaTypes: ['images'],
     quality: APP_CONFIG.captureQuality,
     allowsEditing: false,
     exif: false,
