@@ -53,7 +53,7 @@ Search the code for `TODO` to find every documented future-extension point.
 
 ## Tech stack
 
-- **React Native 0.85** + **Expo (SDK 56)** + **React 19** + **TypeScript**
+- **React Native 0.81** + **Expo (SDK 54)** + **React 19** + **TypeScript**
 - **Expo Router** (file-based navigation)
 - **Supabase** (Postgres + Storage) — optional
 - **expo-camera** + **expo-image-picker** (capture)
