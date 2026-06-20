@@ -42,7 +42,7 @@ export default function RootLayout() {
           </Stack>
         ) : (
           <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center' }}>
-            <LoadingState label="Loading CardSnap…" />
+            <LoadingState label="Loading bulk…" brand />
           </View>
         )}
       </SafeAreaProvider>

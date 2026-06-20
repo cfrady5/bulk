@@ -3,16 +3,20 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { colors, radius, spacing } from '@/theme';
 
+import { BrandMark } from './BrandMark';
 import { Text } from './Text';
 
 interface LoadingStateProps {
   label?: string;
   inline?: boolean;
+  /** Show the bulk app mark above the spinner (for full-screen loads). */
+  brand?: boolean;
 }
 
-export function LoadingState({ label = 'Loading…', inline }: LoadingStateProps) {
+export function LoadingState({ label = 'Loading…', inline, brand }: LoadingStateProps) {
   return (
     <View style={[styles.container, inline ? styles.inline : null]}>
+      {brand && !inline ? <BrandMark size={76} glow style={styles.mark} /> : null}
       <ActivityIndicator color={colors.primary} size={inline ? 'small' : 'large'} />
       {label ? (
         <Text variant="bodySecondary" style={styles.label}>
@@ -52,4 +56,5 @@ const styles = StyleSheet.create({
   },
   inline: { paddingVertical: spacing.lg, flexDirection: 'row' },
   label: {},
+  mark: { marginBottom: spacing.sm },
 });

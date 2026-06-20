@@ -1,8 +1,12 @@
-# CardSnap Listings
+<p align="center">
+  <img src="brand/brand-bulk.png" alt="bulk" width="420" />
+</p>
+
+# bulk
 
 > Snap → AI draft → human review → eBay validation → export CSV → email/share
 
-CardSnap Listings is a premium, private mobile workflow tool for **sports card
+**bulk** is a premium, private mobile workflow tool for **sports card
 sellers**. Instead of listing cards one-by-one, you create a batch, rapidly
 photograph each card (front / back / imperfection), let AI draft listing
 details, review and fix anything missing or low-confidence, validate against

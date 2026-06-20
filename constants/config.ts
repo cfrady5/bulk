@@ -6,7 +6,7 @@
  */
 
 export const APP_CONFIG = {
-  appName: 'CardSnap Listings',
+  appName: 'bulk',
 
   /**
    * eBay listing titles are capped at 80 characters. Validation enforces this

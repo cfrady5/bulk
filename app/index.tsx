@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -6,6 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import {
   BatchCard,
   BatchStats,
+  BrandLockup,
+  BrandMark,
   Button,
   Card,
   EmptyState,
@@ -44,11 +45,9 @@ export default function HomeScreen() {
       {/* Brand header */}
       <View style={styles.brandRow}>
         <View style={styles.brandLeft}>
-          <View style={styles.logo}>
-            <Ionicons name="scan" size={20} color={colors.onPrimary} />
-          </View>
+          <BrandMark size={42} glow />
           <View>
-            <Text variant="title2">CardSnap</Text>
+            <Text variant="title2">bulk</Text>
             <Text variant="caption" color={colors.textMuted}>
               {plural(batchList.length, 'batch', 'batches')} ·{' '}
               {plural(allListings.length, 'listing')}
@@ -59,9 +58,12 @@ export default function HomeScreen() {
 
       {isEmpty ? (
         <Card style={styles.emptyCard}>
+          <View style={styles.emptyBrand}>
+            <BrandLockup width={210} glow />
+          </View>
           <EmptyState
             icon="camera-outline"
-            title="Snap, draft, export."
+            title="List your cards in bulk."
             message="Create your first batch, rapidly photograph your cards, and let AI draft eBay-ready listings."
             ctaLabel="Create your first batch"
             ctaIcon="add"
@@ -112,15 +114,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   brandLeft: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   emptyCard: { marginTop: spacing.xl },
+  emptyBrand: { alignItems: 'center', paddingTop: spacing.lg },
   newBtn: { marginBottom: spacing.sm },
   footerNote: { marginTop: spacing.xxl },
 });

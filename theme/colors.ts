@@ -1,5 +1,5 @@
 /**
- * CardSnap color system.
+ * bulk color system.
  *
  * Premium dark interface — deep graphite backgrounds, elevated surfaces,
  * subtle borders, a single restrained accent, and clear semantic colors.
@@ -31,6 +31,12 @@ export const palette = {
   accent: '#6E8BFF',
   accentMuted: '#3A4470',
   accentSoft: 'rgba(110, 139, 255, 0.14)',
+
+  // Brand gradient anchor colors (the logo cards: violet -> electric blue)
+  brandViolet: '#8E73F5',
+  brandIndigo: '#5C5DF0',
+  brandBlue: '#1E47E6',
+  brandGlow: 'rgba(110, 139, 255, 0.22)',
 
   // Semantic
   success: '#3FCF8E',

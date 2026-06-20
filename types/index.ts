@@ -1,5 +1,5 @@
 /**
- * CardSnap domain types.
+ * bulk domain types.
  *
  * These are the single source of truth for the app's data model. They mirror
  * the Supabase schema (see supabase/schema.sql) and are used by the local

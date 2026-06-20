@@ -28,7 +28,7 @@ export async function shareCsvFile(uri: string, options: ShareCsvOptions = {}): 
   try {
     await Sharing.shareAsync(uri, {
       mimeType: 'text/csv',
-      dialogTitle: options.dialogTitle ?? 'Export CardSnap CSV',
+      dialogTitle: options.dialogTitle ?? 'Export bulk CSV',
       UTI: 'public.comma-separated-values-text',
     });
   } catch (err) {

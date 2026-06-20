@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import {
+  BrandMark,
   Button,
   Card,
   ProgressRing,
@@ -103,6 +104,7 @@ export default function FinalizeScreen() {
       <ScreenHeader title="Finalizing Postings" showBack={!finished} />
 
       <View style={styles.center}>
+        <BrandMark size={56} glow style={styles.brandMark} />
         <ProgressRing
           progress={progress}
           size={140}
@@ -156,6 +158,7 @@ export default function FinalizeScreen() {
 
 const styles = StyleSheet.create({
   center: { alignItems: 'center', gap: spacing.md, marginTop: spacing.giant },
+  brandMark: { marginBottom: spacing.sm },
   heading: { marginTop: spacing.lg },
   sub: { maxWidth: 300 },
   skeletons: { marginTop: spacing.giant, gap: spacing.md },

@@ -4,8 +4,10 @@ export { radius } from './radius';
 export { typography, fontFamily, fontWeight } from './typography';
 export type { TypographyVariant } from './typography';
 export { shadows } from './shadows';
+export { gradients } from './gradients';
 
 import { colors } from './colors';
+import { gradients } from './gradients';
 import { radius } from './radius';
 import { shadows } from './shadows';
 import { layout, spacing } from './spacing';
@@ -19,6 +21,7 @@ export const theme = {
   radius,
   typography,
   shadows,
+  gradients,
 } as const;
 
 export type Theme = typeof theme;

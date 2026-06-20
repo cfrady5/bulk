@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -8,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { colors, radius, shadows, spacing, typography } from '@/theme';
+import { colors, gradients, radius, shadows, spacing, typography } from '@/theme';
 
 import { Text } from './Text';
 
@@ -60,6 +61,7 @@ export function Button({
   const v = VARIANT_STYLES[variant];
   const s = SIZE_STYLES[size];
   const isDisabled = disabled || loading;
+  const isPrimary = variant === 'primary';
 
   return (
     <Pressable
@@ -68,7 +70,7 @@ export function Button({
       style={({ pressed }) => [
         styles.base,
         {
-          backgroundColor: v.bg,
+          backgroundColor: isPrimary ? 'transparent' : v.bg,
           height: s.height,
           paddingHorizontal: s.px,
           borderWidth: v.border ? 1 : 0,
@@ -76,10 +78,18 @@ export function Button({
           opacity: isDisabled ? 0.45 : pressed ? 0.85 : 1,
           alignSelf: fullWidth ? 'stretch' : 'flex-start',
         },
-        variant === 'primary' && !isDisabled ? shadows.glow : null,
+        isPrimary && !isDisabled ? shadows.glow : null,
         style,
       ]}
     >
+      {isPrimary ? (
+        <LinearGradient
+          colors={gradients.brand}
+          start={gradients.diagonal.start}
+          end={gradients.diagonal.end}
+          style={[StyleSheet.absoluteFill, { borderRadius: radius.md }]}
+        />
+      ) : null}
       <View style={styles.content}>
         {loading ? (
           <ActivityIndicator color={v.fg} size="small" />

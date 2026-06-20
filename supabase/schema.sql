@@ -1,5 +1,5 @@
 -- ===========================================================================
--- CardSnap Listings — Supabase schema
+-- bulk — Supabase schema
 -- ===========================================================================
 -- Run this in the Supabase SQL Editor (or via the CLI) to provision the
 -- backend. The MVP app runs fully local without this, but Supabase is required

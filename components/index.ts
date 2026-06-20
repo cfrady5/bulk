@@ -1,6 +1,8 @@
 export { Screen } from './Screen';
 export { ScreenHeader } from './ScreenHeader';
 export { Text } from './Text';
+export { BrandMark } from './BrandMark';
+export { BrandLockup } from './BrandLockup';
 export { Button } from './Button';
 export type { ButtonVariant, ButtonSize } from './Button';
 export { IconButton } from './IconButton';

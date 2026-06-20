@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import {
+  BrandMark,
   Button,
   Card,
   type ChecklistItem,
@@ -211,6 +212,29 @@ export default function ExportScreen() {
     <Screen>
       <ScreenHeader title="Export" subtitle={batch?.name} />
 
+      {/* Export success brand moment */}
+      {lastExport ? (
+        <Card style={styles.successCard} elevated>
+          <BrandMark size={48} glow />
+          <View style={styles.successText}>
+            <Text variant="headline" color={colors.success}>
+              {lastExport.mode === 'ebay' ? 'eBay CSV ready' : 'Backup CSV ready'}
+            </Text>
+            <Text variant="caption" color={colors.textMuted} numberOfLines={1}>
+              {lastExport.fileName}
+            </Text>
+          </View>
+          <Button
+            label="Share"
+            icon="share-outline"
+            size="sm"
+            variant="secondary"
+            fullWidth={false}
+            onPress={() => handleShare()}
+          />
+        </Card>
+      ) : null}
+
       {/* Summary stats */}
       <View style={styles.statsRow}>
         <StatBox value={ready.length} label="Ready" color={colors.success} />
@@ -255,7 +279,7 @@ export default function ExportScreen() {
         <Button label="Export Internal CSV" icon="document-outline" variant="secondary" disabled={busy} onPress={() => doExport('internal')} />
         <View style={styles.actionRow}>
           <Button label="Share CSV" icon="share-outline" variant="secondary" disabled={!lastExport} onPress={() => handleShare()} style={styles.flex} />
-          <Button label="Email CSV" icon="mail-outline" variant="secondary" disabled={!lastExport} onPress={() => handleShare('CardSnap eBay export')} style={styles.flex} />
+          <Button label="Email CSV" icon="mail-outline" variant="secondary" disabled={!lastExport} onPress={() => handleShare('bulk eBay export')} style={styles.flex} />
         </View>
         <Button label="Mark Ready as Exported" icon="checkmark-done-outline" variant="ghost" disabled={ready.length === 0} onPress={() => {
           Alert.alert('Mark exported', `Mark ${ready.length} Ready listing(s) as Exported?`, [
@@ -326,6 +350,14 @@ function StatBox({ value, label, color }: { value: number; label: string; color:
 }
 
 const styles = StyleSheet.create({
+  successCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+    borderColor: colors.success,
+  },
+  successText: { flex: 1 },
   statsRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },
   statBox: { flex: 1, alignItems: 'center', gap: 2 },
   actionRow: { flexDirection: 'row', gap: spacing.md, marginTop: spacing.sm },
