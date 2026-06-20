@@ -1,13 +1,13 @@
-/* Generates real app assets + the brand board from the uploaded brand images:
- *   assets/bulk full name.png      (3:1 logo lockup, transparent)
- *   assets/ChatGPT Image ....png   (1:1 3D app icon, transparent)
+/* Generates app assets + the brand board from the transparent brand masters:
+ *   assets/brand/app-icon.png      (transparent 3D app icon)
+ *   assets/brand/logo-lockup.png   (transparent icon + "bulk" wordmark)
  *
  * Outputs:
- *   assets/icon.png            1024  opaque dark, icon centered (iOS/Android)
- *   assets/adaptive-icon.png   1024  transparent, icon in Android safe zone
- *   assets/favicon.png          256  opaque dark, icon centered (web)
- *   assets/splash.png      1242x2436 opaque dark, lockup centered
- *   brand/brand-bulk.png   3100      brand board rebuilt with the real images
+ *   assets/icon.png            1024  dark tile, icon centered (iOS/Android)
+ *   assets/adaptive-icon.png   1024  dark, icon in Android safe zone
+ *   assets/favicon.png          256  dark, icon centered (web)
+ *   assets/splash.png      1242x2436 dark, lockup centered
+ *   brand/brand-bulk.png   3100      brand board (logo directly on dark)
  *
  * Usage: node scripts/generate-brand-assets.js
  */
@@ -16,9 +16,9 @@ const path = require('path');
 const { Resvg } = require('@resvg/resvg-js');
 
 const ROOT = path.join(__dirname, '..');
-// Clean-named copies of the uploaded brand art (white background intact).
 const ICON_SRC = path.join(ROOT, 'assets', 'brand', 'app-icon.png');
 const LOCK_SRC = path.join(ROOT, 'assets', 'brand', 'logo-lockup.png');
+const LOCK_RATIO = 1600 / 624; // ≈ 2.56
 
 const dataUri = (p) => `data:image/png;base64,${fs.readFileSync(p).toString('base64')}`;
 const ICON = dataUri(ICON_SRC);
@@ -39,55 +39,55 @@ function render(svg, outPath, widthPx, { background } = {}) {
   console.log('wrote', path.relative(ROOT, outPath), `${widthPx}px`);
 }
 
-// ---------------------------------------------------------------- app icon
+const GLOW_DEFS = `
+  <radialGradient id="glow" cx="0.5" cy="0.42" r="0.6">
+    <stop offset="0" stop-color="#2a2c6a" stop-opacity="0.6"/>
+    <stop offset="1" stop-color="#0c0c0f" stop-opacity="0"/>
+  </radialGradient>`;
+
+// ---------------------------------------------------------------- launcher icon
 function appIcon() {
-  // The brand art has a white background, so the launcher icon is a clean white
-  // tile with the b + cards (the OS rounds the corners). Full-bleed cover.
+  // Dark rounded tile with the glossy b (OS rounds the corners).
   const S = 1024;
+  const pad = S * 0.16;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <rect width="${S}" height="${S}" fill="#FFFFFF"/>
-    ${img(ICON, 0, 0, S, S, 'xMidYMid slice')}
+    <defs>${GLOW_DEFS}</defs>
+    <rect width="${S}" height="${S}" fill="#0c0c0f"/>
+    <rect width="${S}" height="${S}" fill="url(#glow)"/>
+    ${img(ICON, pad, pad, S - pad * 2, S - pad * 2)}
   </svg>`;
-  render(svg, path.join(ROOT, 'assets', 'icon.png'), S, { background: '#FFFFFF' });
+  render(svg, path.join(ROOT, 'assets', 'icon.png'), S, { background: '#0c0c0f' });
 }
 
-// ---------------------------------------------------------------- adaptive (Android)
 function adaptiveIcon() {
-  // White safe-zone foreground (app.json sets adaptive backgroundColor #FFFFFF).
-  // Keep the mark within the inner ~70% so Android's mask never clips it.
+  // app.json adaptive backgroundColor is dark; keep the mark in the ~64% safe zone.
   const S = 1024;
-  const box = S * 0.7;
+  const box = S * 0.64;
   const off = (S - box) / 2;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <rect width="${S}" height="${S}" fill="#FFFFFF"/>
+    <rect width="${S}" height="${S}" fill="#0A0B0D"/>
     ${img(ICON, off, off, box, box)}
   </svg>`;
-  render(svg, path.join(ROOT, 'assets', 'adaptive-icon.png'), S, { background: '#FFFFFF' });
+  render(svg, path.join(ROOT, 'assets', 'adaptive-icon.png'), S, { background: '#0A0B0D' });
 }
 
-// ---------------------------------------------------------------- favicon (web)
 function favicon() {
   const S = 256;
+  const pad = S * 0.16;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <rect width="${S}" height="${S}" fill="#FFFFFF"/>
-    ${img(ICON, 0, 0, S, S, 'xMidYMid slice')}
+    <rect width="${S}" height="${S}" fill="#0c0c0f"/>
+    ${img(ICON, pad, pad, S - pad * 2, S - pad * 2)}
   </svg>`;
-  render(svg, path.join(ROOT, 'assets', 'favicon.png'), S, { background: '#FFFFFF' });
+  render(svg, path.join(ROOT, 'assets', 'favicon.png'), S, { background: '#0c0c0f' });
 }
 
-// ---------------------------------------------------------------- splash
 function splash() {
-  // Dark premium splash with the lockup on a white "logo plate".
   const W = 1242,
     H = 2436;
   const lockW = W * 0.6;
-  const lockH = lockW / 3; // lockup is 3:1
-  const padH = lockW * 0.08;
-  const padV = lockH * 0.5;
-  const plateW = lockW + padH * 2;
-  const plateH = lockH + padV * 2;
-  const px = (W - plateW) / 2;
-  const py = (H - plateH) / 2;
+  const lockH = lockW / LOCK_RATIO;
+  const lx = (W - lockW) / 2;
+  const ly = (H - lockH) / 2;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
     <defs>
       <radialGradient id="g" cx="0.5" cy="0.42" r="0.55">
@@ -97,8 +97,7 @@ function splash() {
     </defs>
     <rect width="${W}" height="${H}" fill="#0A0B0D"/>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
-    ${rr(px, py, plateW, plateH, plateH * 0.3, 'fill="#FFFFFF"')}
-    ${img(LOCK, px + padH, py + padV, lockW, lockH)}
+    ${img(LOCK, lx, ly, lockW, lockH)}
   </svg>`;
   render(svg, path.join(ROOT, 'assets', 'splash.png'), W, { background: '#0A0B0D' });
 }
@@ -135,13 +134,14 @@ function feature(cx, type, label, sub) {
 }
 
 function iconTile(x, y, size, idn) {
-  // The brand art is white-bg, so the app-icon tile is a clean white tile.
+  // Dark rounded app-icon tile with the glossy mark (matches the in-app tile).
   const r = size * 0.235;
+  const pad = size * 0.16;
   return (
-    rr(x, y, size, size, r, `fill="#FFFFFF"`) +
-    `<clipPath id="clip${idn}"><rect x="${x}" y="${y}" width="${size}" height="${size}" rx="${r}"/></clipPath>` +
-    `<g clip-path="url(#clip${idn})">${img(ICON, x, y, size, size, 'xMidYMid slice')}</g>` +
-    rr(x + 0.75, y + 0.75, size - 1.5, size - 1.5, r - 1, `fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"`)
+    rr(x, y, size, size, r, `fill="#16181D"`) +
+    rr(x, y, size, size, r, `fill="url(#tileSheen)"`) +
+    rr(x + 1, y + 1, size - 2, size - 2, r - 1, `fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"`) +
+    img(ICON, x + pad, y + pad, size - pad * 2, size - pad * 2)
   );
 }
 
@@ -197,15 +197,10 @@ function phoneMockup() {
 function brandBoard() {
   const W = 1240,
     H = 1240;
-  // top lockup on a white "logo plate"
-  const lockW = 600,
-    lockH = lockW / 3,
-    padH = 56,
-    padV = 78;
-  const plateW = lockW + padH * 2,
-    plateH = lockH + padV * 2,
-    plateX = (W - plateW) / 2,
-    plateY = 175;
+  const lockW = 720,
+    lockH = lockW / LOCK_RATIO,
+    lockX = (W - lockW) / 2,
+    lockY = 250;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     <radialGradient id="bgGlow" cx="0.5" cy="0.30" r="0.55">
@@ -221,7 +216,7 @@ function brandBoard() {
       <stop offset="0" stop-color="#9A7CFF"/><stop offset="1" stop-color="#3D74FF"/>
     </linearGradient>
     <linearGradient id="tileSheen" x1="0" y1="0" x2="0.3" y2="1">
-      <stop offset="0" stop-color="rgba(120,130,200,0.18)"/>
+      <stop offset="0" stop-color="rgba(120,130,200,0.16)"/>
       <stop offset="0.4" stop-color="rgba(255,255,255,0)"/>
       <stop offset="1" stop-color="rgba(0,0,0,0.25)"/>
     </linearGradient>
@@ -236,11 +231,11 @@ function brandBoard() {
     <linearGradient id="phoneFrame" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#3a3d44"/><stop offset="0.5" stop-color="#16181c"/><stop offset="1" stop-color="#2a2d33"/>
     </linearGradient>
-    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#000000" flood-opacity="0.55"/>
-    </filter>
     <filter id="logoShadow" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#000000" flood-opacity="0.55"/>
     </filter>
   </defs>
 
@@ -249,11 +244,8 @@ function brandBoard() {
   <rect x="0" y="828" width="620" height="${H - 828}" fill="#0a0a0d"/>
   <rect x="620" y="828" width="${W - 620}" height="${H - 828}" fill="#070709"/>
 
-  <!-- top lockup (real image) on a white logo plate -->
-  <g filter="url(#logoShadow)">
-    ${rr(plateX, plateY, plateW, plateH, plateH * 0.3, 'fill="#FFFFFF"')}
-    ${img(LOCK, plateX + padH, plateY + padV, lockW, lockH)}
-  </g>
+  <!-- top lockup directly on dark -->
+  <g filter="url(#logoShadow)">${img(LOCK, lockX, lockY, lockW, lockH)}</g>
 
   <line x1="150" y1="632" x2="1090" y2="632" stroke="rgba(255,255,255,0.10)" stroke-width="1.4"/>
 

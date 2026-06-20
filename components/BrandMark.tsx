@@ -2,47 +2,61 @@ import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
-import { colors, radius, shadows } from '@/theme';
+import { colors, shadows } from '@/theme';
 
-// Official app icon asset (white-background brand art shown as a rounded tile).
+// Official app icon (transparent 3D mark: glossy b + violet→blue stacked cards).
 const APP_ICON = require('@/assets/brand/app-icon.png');
 
 interface BrandMarkProps {
   size?: number;
-  /** Round the tile like an app icon (default true). */
-  rounded?: boolean;
-  /** Add a soft violet brand glow behind the mark. */
+  /** Soft violet brand glow behind the mark. */
   glow?: boolean;
+  /** Render inside a dark rounded "app icon" tile (for app-icon references). */
+  tile?: boolean;
   style?: ViewStyle;
 }
 
 /**
- * The bulk app mark (the b + stacked cards). Use anywhere an app icon is
- * needed: loading/empty states, headers, export success, etc.
+ * The bulk app mark. Transparent art that sits directly on the dark UI — use
+ * anywhere an app icon is needed (headers, loading/empty states, export
+ * success). Pass `tile` to show it as a rounded app-icon tile.
  */
-export function BrandMark({ size = 64, rounded = true, glow = false, style }: BrandMarkProps) {
-  const r = rounded ? size * 0.235 : 0;
+export function BrandMark({ size = 64, glow = false, tile = false, style }: BrandMarkProps) {
+  if (tile) {
+    const r = size * 0.235;
+    const pad = size * 0.14;
+    return (
+      <View
+        style={[
+          styles.tile,
+          { width: size, height: size, borderRadius: r },
+          glow ? shadows.glow : null,
+          style,
+        ]}
+      >
+        <Image
+          source={APP_ICON}
+          style={{ width: size - pad * 2, height: size - pad * 2 }}
+          contentFit="contain"
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={[{ width: size, height: size }, glow ? shadows.glow : null, style]}>
-      <Image
-        source={APP_ICON}
-        style={[styles.img, { width: size, height: size, borderRadius: r }]}
-        contentFit="cover"
-      />
-      <View
-        pointerEvents="none"
-        style={[styles.border, { borderRadius: r }]}
-      />
+      <Image source={APP_ICON} style={{ width: size, height: size }} contentFit="contain" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  img: { backgroundColor: colors.white },
-  border: {
-    ...StyleSheet.absoluteFillObject,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.18)',
+  tile: {
+    backgroundColor: colors.surfaceElevated,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
 });
 
