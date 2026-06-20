@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1240" viewBox="0 0 1240 1240">
+  <defs>
+    
+  <linearGradient id="mCardGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8E73F5"/>
+    <stop offset="0.42" stop-color="#5C5DF0"/>
+    <stop offset="1" stop-color="#1E47E6"/>
+  </linearGradient>
+  <linearGradient id="mCardSheen" x1="0" y1="0" x2="0.2" y2="1">
+    <stop offset="0" stop-color="rgba(255,255,255,0.35)"/>
+    <stop offset="0.35" stop-color="rgba(255,255,255,0.05)"/>
+    <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+  </linearGradient>
+  <linearGradient id="mWhite" x1="0" y1="0" x2="0.15" y2="1">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.5" stop-color="#F0F2F7"/>
+    <stop offset="1" stop-color="#CBD2DF"/>
+  </linearGradient>
+  <filter id="mBShadow" x="-40%" y="-40%" width="180%" height="190%">
+    <feOffset dx="6" dy="12"/>
+    <feGaussianBlur stdDeviation="9"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
+  </filter>
+    <radialGradient id="bgGlow" cx="0.5" cy="0.30" r="0.55">
+      <stop offset="0" stop-color="#2a2c66" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#16183a" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#0a0a0c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.45" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+    <linearGradient id="iconGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9A7CFF"/>
+      <stop offset="1" stop-color="#3D74FF"/>
+    </linearGradient>
+    <linearGradient id="wordWhite" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#EDF0F6"/>
+      <stop offset="1" stop-color="#C4CBD9"/>
+    </linearGradient>
+    <linearGradient id="tileSheen" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="rgba(120,130,200,0.18)"/>
+      <stop offset="0.4" stop-color="rgba(255,255,255,0)"/>
+      <stop offset="1" stop-color="rgba(0,0,0,0.25)"/>
+    </linearGradient>
+    <radialGradient id="tileFloor" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4636c0" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#4636c0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="phoneGlow" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#2b2f7a" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#0a0a0c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="phoneFrame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a3d44"/>
+      <stop offset="0.5" stop-color="#16181c"/>
+      <stop offset="1" stop-color="#2a2d33"/>
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="logoShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="1240" height="1240" fill="#0c0c0e"/>
+  <rect width="1240" height="1240" fill="url(#bgGlow)"/>
+
+  <!-- bottom panels base + divider lines -->
+  <rect x="0" y="828" width="1240" height="412" fill="#08080a"/>
+  <rect x="0" y="828" width="620" height="412" fill="#0a0a0d"/>
+  <rect x="620" y="828" width="620" height="412" fill="#070709"/>
+
+  <!-- ===== TOP: logo lockup ===== -->
+  <g filter="url(#logoShadow)">
+    <g transform="translate(214 214) scale(0.86)"><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="#1b3fb0"/><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="#274fce"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="#3a63e6"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardGrad)"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardSheen)"/><rect x="97" y="45" width="148" height="186" rx="29" ry="29" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/><g><g filter="url(#mBShadow)"><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="#000"/><circle cx="143" cy="183" r="52" fill="none" stroke="#000" stroke-width="42"/></g><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="url(#mWhite)"/><circle cx="143" cy="183" r="52" fill="none" stroke="url(#mWhite)" stroke-width="42"/></g></g>
+  </g>
+  <g transform="translate(560 274) scale(0.82)"
+            stroke="url(#wordWhite)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="0" y="0" width="46" height="210" rx="23" ry="23" fill="url(#wordWhite)" stroke="none"/><circle cx="98" cy="135" r="52" fill="none"/><path d="M 226 60 L 226 158 Q 226 210 278 210 L 278 210 Q 330 210 330 158 L 330 60" fill="none"/><rect x="383" y="0" width="46" height="210" rx="23" ry="23" fill="url(#wordWhite)" stroke="none"/><rect x="459" y="0" width="46" height="210" rx="23" ry="23" fill="url(#wordWhite)" stroke="none"/><path d="M 578 60 L 490 141" fill="none"/><path d="M 494 141 L 586 210" fill="none"/>
+          </g>
+
+  <!-- ===== divider above features ===== -->
+  <line x1="150" y1="632" x2="1090" y2="632" stroke="rgba(255,255,255,0.10)" stroke-width="1.4"/>
+
+  <!-- ===== feature row ===== -->
+  
+    <g transform="translate(267.5 700)">
+      <path d="M 0 -16 L 20 -5 L 0 6 L -20 -5 Z" stroke="url(#iconGrad)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M -20 2 L 0 13 L 20 2" stroke="url(#iconGrad)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M -20 9 L 0 20 L 20 9" stroke="url(#iconGrad)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="267.5" y="767" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans" font-weight="700"
+          font-size="21" letter-spacing="2.5" fill="#D7DAE2">BATCH</text>
+    <text x="267.5" y="795" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans"
+          font-size="18" fill="#787E89">List in bulk</text>
+  
+    <g transform="translate(502.5 700)">
+      <path d="M 5 -20 L -9 4 L 0 4 L -4 20 L 11 -4 L 1 -4 Z" fill="url(#iconGrad)" stroke="url(#iconGrad)" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+    <text x="502.5" y="767" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans" font-weight="700"
+          font-size="21" letter-spacing="2.5" fill="#D7DAE2">SPEED</text>
+    <text x="502.5" y="795" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans"
+          font-size="18" fill="#787E89">Save time</text>
+  
+    <g transform="translate(737.5 700)">
+      <rect x="-18" y="-18" width="15" height="15" rx="4" ry="4" fill="none" stroke="url(#iconGrad)" stroke-width="3.4"/>
+      <rect x="4" y="-18" width="15" height="15" rx="4" ry="4" fill="none" stroke="url(#iconGrad)" stroke-width="3.4"/>
+      <rect x="-18" y="4" width="15" height="15" rx="4" ry="4" fill="none" stroke="url(#iconGrad)" stroke-width="3.4"/>
+      <rect x="4" y="4" width="15" height="15" rx="4" ry="4" fill="none" stroke="url(#iconGrad)" stroke-width="3.4"/>
+    </g>
+    <text x="737.5" y="767" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans" font-weight="700"
+          font-size="21" letter-spacing="2.5" fill="#D7DAE2">ORGANIZE</text>
+    <text x="737.5" y="795" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans"
+          font-size="18" fill="#787E89">Stay organized</text>
+  
+    <g transform="translate(972.5 700)">
+    <circle cx="0" cy="0" r="19" stroke="url(#iconGrad)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M -8 0 L -2 7 L 9 -7" stroke="url(#iconGrad)" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+    <text x="972.5" y="767" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans" font-weight="700"
+          font-size="21" letter-spacing="2.5" fill="#D7DAE2">LIST</text>
+    <text x="972.5" y="795" text-anchor="middle" font-family="Liberation Sans, DejaVu Sans"
+          font-size="18" fill="#787E89">Get listed</text>
+  <line x1="385" y1="678" x2="385" y2="812" stroke="rgba(255,255,255,0.08)" stroke-width="1.2"/>
+  <line x1="620" y1="678" x2="620" y2="812" stroke="rgba(255,255,255,0.08)" stroke-width="1.2"/>
+  <line x1="855" y1="678" x2="855" y2="812" stroke="rgba(255,255,255,0.08)" stroke-width="1.2"/>
+
+  <!-- ===== bottom-left: standalone app icon ===== -->
+  <ellipse cx="300" cy="1180" rx="170" ry="34" fill="url(#tileFloor)"/>
+  <g filter="url(#softShadow)">
+    <g><rect x="184" y="905" width="232" height="232" rx="54.519999999999996" ry="54.519999999999996" fill="#0c0c0f"/><rect x="184" y="905" width="232" height="232" rx="54.519999999999996" ry="54.519999999999996" fill="url(#tileSheen)"/><rect x="185" y="906" width="230" height="230" rx="53.519999999999996" ry="53.519999999999996" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/><clipPath id="tileClip184_905"><rect x="184" y="905" width="232" height="232" rx="54.519999999999996"/></clipPath><g clip-path="url(#tileClip184_905)"><g transform="translate(216.73777777777778 939.4906666666667) scale(0.4382222222222222)"><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="#1b3fb0"/><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="#274fce"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="#3a63e6"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardGrad)"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardSheen)"/><rect x="97" y="45" width="148" height="186" rx="29" ry="29" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/><g><g filter="url(#mBShadow)"><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="#000"/><circle cx="143" cy="183" r="52" fill="none" stroke="#000" stroke-width="42"/></g><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="url(#mWhite)"/><circle cx="143" cy="183" r="52" fill="none" stroke="url(#mWhite)" stroke-width="42"/></g></g></g></g>
+  </g>
+
+  <!-- ===== bottom-right: phone mockup ===== -->
+  <g transform="rotate(-7 980 1120)">
+    <!-- frame -->
+    <rect x="705" y="868" width="470" height="560" rx="78" ry="78" fill="url(#phoneFrame)"/>
+    <rect x="709" y="872" width="462" height="552" rx="74" ry="74" fill="#0a0a0c"/>
+    <!-- screen -->
+    <clipPath id="screenClip"><rect x="719" y="882" width="442" height="532" rx="64" ry="64" /></clipPath>
+    <g clip-path="url(#screenClip)">
+      <rect x="719" y="882" width="442" height="532" rx="64" ry="64" fill="#0b0d16"/>
+      <ellipse cx="940" cy="1105.44" rx="309.4" ry="266" fill="url(#phoneGlow)"/>
+      <!-- dynamic island -->
+      <rect x="888" y="908" width="104" height="34" rx="17" ry="17" fill="#000000"/>
+      <circle cx="974" cy="925" r="7" fill="#0c0c18"/>
+      <!-- status bar -->
+      <text x="753" y="934" font-family="Liberation Sans, DejaVu Sans" font-weight="700" font-size="26" fill="#FFFFFF">9:41</text>
+      <rect x="1039" y="924" width="4.5" height="10" rx="1.5" fill="#FFFFFF"/><rect x="1046" y="920" width="4.5" height="14" rx="1.5" fill="#FFFFFF"/><rect x="1053" y="916" width="4.5" height="18" rx="1.5" fill="#FFFFFF"/><rect x="1060" y="912" width="4.5" height="22" rx="1.5" fill="#FFFFFF"/><g transform="translate(1079 916) " fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round">
+      <path d="M 0 6 A 14 14 0 0 1 24 6"/>
+      <path d="M 5 11 A 8 8 0 0 1 19 11"/>
+      <circle cx="12" cy="17" r="1.6" fill="#FFFFFF" stroke="none"/>
+    </g><g transform="translate(1113 914)">
+      <rect x="0" y="0" width="34" height="18" rx="4.5" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>
+      <rect x="35.5" y="6" width="2.8" height="6" rx="1.4" fill="rgba(255,255,255,0.55)"/>
+      <rect x="2.5" y="2.5" width="25" height="13" rx="2.5" fill="#FFFFFF"/>
+    </g>
+      <!-- home screen app icon + label -->
+      <g><rect x="884" y="1062.88" width="112" height="112" rx="26.32" ry="26.32" fill="#0c0c0f"/><rect x="884" y="1062.88" width="112" height="112" rx="26.32" ry="26.32" fill="url(#tileSheen)"/><rect x="885" y="1063.88" width="110" height="110" rx="25.32" ry="25.32" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/><clipPath id="tileClip884_1063"><rect x="884" y="1062.88" width="112" height="112" rx="26.32"/></clipPath><g clip-path="url(#tileClip884_1063)"><g transform="translate(899.8044444444444 1079.5306666666668) scale(0.21155555555555555)"><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="#1b3fb0"/><rect x="135" y="89" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="#274fce"/><rect x="122" y="74" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="#3a63e6"/><rect x="109" y="59" width="150" height="188" rx="30" ry="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardGrad)"/><rect x="96" y="44" width="150" height="188" rx="30" ry="30" fill="url(#mCardSheen)"/><rect x="97" y="45" width="148" height="186" rx="29" ry="29" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/><g><g filter="url(#mBShadow)"><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="#000"/><circle cx="143" cy="183" r="52" fill="none" stroke="#000" stroke-width="42"/></g><rect x="49" y="30" width="42" height="226" rx="21" ry="21" fill="url(#mWhite)"/><circle cx="143" cy="183" r="52" fill="none" stroke="url(#mWhite)" stroke-width="42"/></g></g></g></g>
+      <text x="940" y="1204.88" text-anchor="middle"
+            font-family="Liberation Sans, DejaVu Sans" font-weight="500" font-size="22" fill="#FFFFFF">bulk</text>
+    </g>
+  </g>
+
+  <!-- global vignette on top -->
+  <rect width="1240" height="1240" fill="url(#vignette)"/>
+</svg>
