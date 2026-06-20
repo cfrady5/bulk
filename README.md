@@ -130,6 +130,40 @@ eBay CSV uploads require **public HTTPS image URLs**. Local `file://` URIs won't
 work for upload, so to produce a truly eBay-ready CSV you need hosted photos —
 that's what Supabase Storage provides.
 
+### ✅ A live database is already provisioned
+
+A Supabase project has been created and fully migrated for this app:
+
+| | |
+|---|---|
+| **Project** | `cardsnap-listings` |
+| **Project ref** | `ltkuipylizzcuxfhtxes` |
+| **API URL** | `https://ltkuipylizzcuxfhtxes.supabase.co` |
+| **Region** | `us-east-1` |
+| **Tables** | `batches`, `listings`, `listing_photos`, `ai_field_confidence`, `export_jobs`, `validation_results` (all created with indexes + `updated_at` triggers) |
+| **Storage** | public bucket `card-listing-photos` (read + anon upload policies) |
+
+To use it, create a `.env` (it is **gitignored**, so it is not in the repo) with
+the project URL + anon key:
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://ltkuipylizzcuxfhtxes.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon key — copy from Supabase dashboard → Project Settings → API>
+EXPO_PUBLIC_PHOTO_PUBLIC_HOST=
+```
+
+Then `npm start` — the app will read/write the live database and upload photos
+to Storage automatically. (The anon key ships in the client bundle by design and
+is safe to expose; it is just not committed to git.)
+
+> ⚠️ **Security note:** Row Level Security is **disabled** on all tables for the
+> no-login MVP, so anyone with the anon key has full read/write access. This is
+> fine for private MVP testing. **Before production**, add auth, enable RLS, and
+> scope each table by owner — see the template at the bottom of
+> [`supabase/schema.sql`](supabase/schema.sql).
+
+### Provisioning from scratch (if you want your own project)
+
 1. **Create a Supabase project** at <https://supabase.com>.
 2. **Run the SQL schema**: open the SQL Editor and paste
    [`supabase/schema.sql`](supabase/schema.sql). This creates all tables,
