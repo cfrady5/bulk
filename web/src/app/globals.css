@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * bulk design tokens (dark, premium graphite). Ported from theme/colors.ts.
+ * Colors are HSL channels so Tailwind can apply opacity (hsl(var(--x) / 0.1)).
+ */
+:root {
+  --background: 220 16% 4%; /* #08090B */
+  --background-alt: 222 14% 7%; /* #0E1014 */
+  --surface: 222 12% 10%; /* #16181D */
+  --surface-elevated: 223 12% 13%; /* #1E2127 */
+  --surface-hover: 223 12% 17%; /* #262A31 */
+  --border: 222 12% 19%; /* #2A2E36 */
+  --border-strong: 221 12% 25%; /* #383D47 */
+  --foreground: 210 20% 96%; /* #F4F6F8 */
+  --muted: 222 12% 13%;
+  --muted-foreground: 218 9% 46%; /* #6B7280 */
+  --primary: 227 100% 71%; /* #6E8BFF */
+  --primary-foreground: 222 30% 5%;
+
+  --positive: 152 58% 53%; /* #3FCF8E */
+  --negative: 0 82% 69%; /* #F26D6D */
+  --warning: 36 89% 63%; /* #F5B14C */
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden; /* spec §21: no horizontal page overflow */
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* number columns read better tabular */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* subtle scrollbars in dark UI */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border-strong));
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
