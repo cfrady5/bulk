@@ -115,9 +115,14 @@ ask ≤ target → **BUY**; target < ask ≤ payout → **NEGOTIATE**; ask > pay
 
 ### Screens
 - **Buy** (default): Today strip, quick search, structured Add Card sheet
-  (graders, grades, photos, autocomplete), Scan Slab (photo + PSA cert lookup
-  when configured), comp list, valuation, need panel, decision card with
-  **Save + Add Next** for rapid-fire entry.
+  (graders, grades, photos, autocomplete), Scan PSA Slab (slab photo + cert
+  lookup: cert number → card details → comps run automatically; register for a
+  free token at [psacard.com/publicapi](https://www.psacard.com/publicapi) and
+  set `PSA_API_TOKEN` — without it the sheet says so and cert entry still saves
+  with the card), comp list with sale photos, valuation, need panel, decision
+  card with **Save + Add Next** for rapid-fire entry. Saved purchases keep the
+  best-matching comp's photo so history rows have card images even without
+  your own photo.
 - **Needs**: team-group cards with tier remaining counts, All/High/Low/Closed
   filters, tap-to-edit; **/admin/needs** is the desktop spreadsheet-style grid.
 - **Purchases**: search + group/show filters, per-row economics, delete, CSV export.
@@ -135,8 +140,9 @@ ask ≤ target → **BUY**; target < ask ≤ payout → **NEGOTIATE**; ask > pay
 - The comp cache and rate-limit capture are in-memory per server instance; on
   serverless they reset per cold start. Move to Supabase tables or KV for
   durable caching.
-- Slab scanning is a placeholder by design: photos are captured and stored, PSA
-  lookup activates only with real credentials, and no OCR/vision runs yet.
+- Slab scanning is cert-lookup only for now: slab photos are captured and
+  stored, PSA lookup needs `PSA_API_TOKEN` (free registration), and no
+  OCR/vision runs yet — the cert number is typed, not read from the photo.
 - Comp queries hit the API's default relevance search; pagination beyond the
   first page (up to 50 sales) isn't fetched.
 - Player-name parsing from a free-text query is heuristic (set names can leak

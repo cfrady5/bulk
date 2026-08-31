@@ -103,10 +103,26 @@ export default function PurchasesPage() {
         const cardLine = [p.card.year, p.card.product, p.card.parallel]
           .filter(Boolean)
           .join(' ')
+        const photo = p.card.imageFront ?? p.compImageUrl
         return (
           <Card key={p.id} className="!p-3.5">
             <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0">
+              {photo ? (
+                // eslint-disable-next-line @next/next/no-img-element -- data URIs / marketplace thumbs
+                <img
+                  src={photo}
+                  alt=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  className="h-14 w-10 shrink-0 rounded-md bg-surface-muted object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.visibility = 'hidden'
+                  }}
+                />
+              ) : (
+                <div className="h-14 w-10 shrink-0 rounded-md bg-surface-muted" />
+              )}
+              <div className="min-w-0 flex-1">
                 <p className="truncate text-[15px] font-bold text-ink">
                   {p.card.playerName || p.query}
                 </p>

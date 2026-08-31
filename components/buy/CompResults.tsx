@@ -24,7 +24,7 @@ export function CompResults({ flow }: { flow: BuyFlow }) {
           Recent Sales · {includedCount}/{flow.sales.length} included
         </SectionLabel>
         <button
-          onClick={() => void flow.search(true)}
+          onClick={() => void flow.search({ refresh: true })}
           className="flex items-center gap-1 rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-semibold text-ink-soft active:scale-95"
         >
           <RefreshCw size={12} />
@@ -57,6 +57,21 @@ export function CompResults({ flow }: { flow: BuyFlow }) {
                   <CheckCircle2 size={19} className="shrink-0 text-buy" />
                 ) : (
                   <Circle size={19} className="shrink-0 text-ink-soft/40" />
+                )}
+                {sale.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- marketplace-hosted thumbs, hosts vary
+                  <img
+                    src={sale.imageUrl}
+                    alt=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="h-12 w-9 shrink-0 rounded-md bg-surface-muted object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.visibility = 'hidden'
+                    }}
+                  />
+                ) : (
+                  <div className="h-12 w-9 shrink-0 rounded-md bg-surface-muted" />
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] leading-tight font-medium text-ink">

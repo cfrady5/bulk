@@ -192,6 +192,8 @@ export interface Purchase {
   teamGroupId: string | null
   valueTierId: string | null
   teamNeedId: string | null
+  /** Thumbnail from the best-matching included comp, shown when no own photo exists. */
+  compImageUrl: string | null
   decisionShown: Decision
   overrodeDecision: boolean
   notes: string

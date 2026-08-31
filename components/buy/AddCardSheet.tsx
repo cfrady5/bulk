@@ -253,13 +253,8 @@ export function AddCardSheet({
         <button
           onClick={() => {
             const q = buildQuery()
-            if (q) {
-              flow.setQuery(q)
-              onClose()
-              void Promise.resolve().then(() => flow.search())
-            } else {
-              onClose()
-            }
+            onClose()
+            if (q) void flow.search({ query: q })
           }}
           className="w-full rounded-2xl bg-accent py-3.5 text-[15px] font-black tracking-wide text-white uppercase active:scale-[0.98]"
         >

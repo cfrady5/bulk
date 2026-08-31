@@ -3,6 +3,11 @@ import { psaProvider } from '@/lib/grading/psa-provider'
 
 export const runtime = 'nodejs'
 
+/** GET /api/grading/psa — whether PSA cert lookup is available. */
+export async function GET() {
+  return NextResponse.json({ configured: psaProvider.isConfigured() })
+}
+
 /**
  * POST /api/grading/psa  { certNumber: string }
  * Returns 501 until PSA_API_TOKEN is configured — the UI then falls back to

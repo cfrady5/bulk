@@ -189,6 +189,7 @@ create table public.purchases (
   team_group_id text references public.team_groups (id) on delete set null,
   value_tier_id text references public.value_tiers (id) on delete set null,
   team_need_id text references public.team_needs (id) on delete set null,
+  comp_image_url text,
   decision_shown text,
   overrode_decision boolean not null default false,
   notes text default '',

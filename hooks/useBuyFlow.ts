@@ -67,8 +67,12 @@ export function useBuyFlow() {
   const [lastSaved, setLastSaved] = useState<string | null>(null)
 
   const search = useCallback(
-    async (refresh = false) => {
-      const q = query.trim()
+    async (opts: { refresh?: boolean; query?: string } = {}) => {
+      const refresh = opts.refresh ?? false
+      // An explicit query (from Add Card / Scan Slab) wins over current state,
+      // which may not have re-rendered yet when this is called right after setQuery.
+      const q = (opts.query ?? query).trim()
+      if (opts.query !== undefined) setQuery(opts.query)
       if (q.length < 3) {
         setSearchError('Type a card first — e.g. "2024 Prizm Caleb Williams Silver PSA 10"')
         setStatus('error')
@@ -245,6 +249,9 @@ export function useBuyFlow() {
       setSaving(true)
       const parsed = parseQuery(query)
       const playerName = card.playerName || titleCase(parsed.terms.slice(0, 4).join(' '))
+      const bestComp = sales
+        .filter((s) => s.included && s.imageUrl)
+        .sort((a, b) => b.matchScore - a.matchScore)[0]
       const purchase: Purchase = {
         id: `p_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
         card: { ...card, playerName },
@@ -267,6 +274,7 @@ export function useBuyFlow() {
         teamGroupId: resolution?.teamGroup?.id ?? null,
         valueTierId: resolution?.tier?.id ?? null,
         teamNeedId: resolution?.need?.id ?? null,
+        compImageUrl: bestComp?.imageUrl ?? null,
         decisionShown: summary.decision,
         overrodeDecision:
           needOverridden || (summary.decision === 'pass' || summary.decision === 'no-need'),
@@ -285,7 +293,7 @@ export function useBuyFlow() {
       }
     },
     [
-      summary, marketValue, askNum, query, card, activeShowId, sellerName, stats,
+      summary, marketValue, askNum, query, card, activeShowId, sellerName, stats, sales,
       manualValueNum, resolution, needOverridden, notes, ruleTags, savePurchase, reset,
     ],
   )
