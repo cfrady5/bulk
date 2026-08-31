@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-canvas: #14171c;
+  --color-canvas-raised: #1c2027;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f5f7;
+  --color-ink: #10131a;
+  --color-ink-soft: #5b6472;
+  --color-line: #e6e8ec;
+  --color-buy: #059669;
+  --color-buy-soft: #d1fae5;
+  --color-negotiate: #d97706;
+  --color-negotiate-soft: #fef3c7;
+  --color-pass: #dc2626;
+  --color-pass-soft: #fee2e2;
+  --color-accent: #3b82f6;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Large financial figures always align */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

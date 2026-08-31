@@ -1,57 +1,48 @@
-/**
- * Formatting + parsing helpers for prices, dates, and display strings.
- */
+const usd = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 2,
+})
+const usdWhole = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+})
 
-/** Format a number as USD. Returns '—' for null/undefined. */
-export function formatPrice(value: number | null | undefined): string {
-  if (value === null || value === undefined || Number.isNaN(value)) return '—';
-  return `$${value.toFixed(2)}`;
+export function money(n: number | null | undefined): string {
+  if (n === null || n === undefined || Number.isNaN(n)) return '—'
+  return usd.format(n)
 }
 
-/** Parse a user-entered price string into a number or null. */
-export function parsePrice(input: string): number | null {
-  if (input === undefined || input === null) return null;
-  const cleaned = String(input).replace(/[^0-9.]/g, '');
-  if (cleaned === '') return null;
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : null;
+/** Compact money for big display numbers: whole dollars under $10k. */
+export function moneyCompact(n: number | null | undefined): string {
+  if (n === null || n === undefined || Number.isNaN(n)) return '—'
+  return Math.abs(n) >= 10000
+    ? `$${(n / 1000).toFixed(1)}k`
+    : usdWhole.format(Math.round(n))
 }
 
-/** True if a price string is a valid, well-formed money value. */
-export function isValidPrice(input: string | number | null | undefined): boolean {
-  if (input === null || input === undefined || input === '') return false;
-  const n = typeof input === 'number' ? input : parsePrice(input);
-  return n !== null && Number.isFinite(n) && n >= 0;
+export function percent(n: number | null | undefined, digits = 1): string {
+  if (n === null || n === undefined || Number.isNaN(n)) return '—'
+  return `${(n * 100).toFixed(digits)}%`
 }
 
-/** Parse an integer (quantity) from input. */
-export function parseInteger(input: string): number | null {
-  const cleaned = String(input).replace(/[^0-9-]/g, '');
-  if (cleaned === '' || cleaned === '-') return null;
-  const n = parseInt(cleaned, 10);
-  return Number.isFinite(n) ? n : null;
+export function saleDate(iso: string | null | undefined): string {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return '—'
+  return d
+    .toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+    .toUpperCase()
 }
 
-/** Friendly relative-ish date, e.g. "Jun 20, 2026". */
-export function formatDate(iso: string | undefined | null): string {
-  if (!iso) return '—';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '—';
-  return d.toLocaleDateString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+export function fullDate(iso: string | null | undefined): string {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return '—'
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-/** Pluralize a noun based on count. */
-export function plural(count: number, singular: string, pluralForm?: string): string {
-  if (count === 1) return `${count} ${singular}`;
-  return `${count} ${pluralForm ?? singular + 's'}`;
-}
-
-/** Truncate with ellipsis. */
-export function truncate(value: string, max: number): string {
-  if (value.length <= max) return value;
-  return value.slice(0, Math.max(0, max - 1)).trimEnd() + '…';
+export function tierLabel(min: number, max: number | null): string {
+  return max === null ? `$${min}+` : `$${min}–$${max}`
 }

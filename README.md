@@ -1,278 +1,160 @@
-<p align="center">
-  <img src="brand/brand-bulk.png" alt="bulk" width="420" />
-</p>
+# Card Desk
 
-# bulk
+A mobile-first acquisition operating system for sports-card buyers and repackers.
+Built to be used **one-handed on an iPhone while walking a card show**:
 
-> Snap → AI draft → human review → eBay validation → export CSV → email/share
+**CARD → COMPS → TEAM → NEED/TIER → PAYOUT → MAX BUY → ACTUAL PRICE → PROFIT → SAVE → NEXT CARD**
 
-**bulk** is a premium, private mobile workflow tool for **sports card
-sellers**. Instead of listing cards one-by-one, you create a batch, rapidly
-photograph each card (front / back / imperfection), let AI draft listing
-details, review and fix anything missing or low-confidence, validate against
-common eBay bulk-upload rules, and export an **eBay Seller Hub–compatible CSV**
-you can email or share for upload.
+Within ~10 seconds of finding a card at a dealer table you see recent comps, whether
+the repacker needs that team/value tier, the payout %, the max price you should pay,
+and a huge **BUY / NEGOTIATE / PASS** verdict with expected profit.
 
-Built with React Native + Expo + TypeScript. Runs in **Expo Go** for MVP
-testing. Local-first — works with **no backend or API keys**, with Supabase as
-an optional cloud layer.
+## Stack
 
----
+- Next.js 16 (App Router) + TypeScript (strict) + Tailwind CSS 4
+- The Card API for recent sales comps (server-side only, provider architecture)
+- Supabase (Postgres + Auth + RLS + Storage) — optional; the app also runs in
+  a zero-setup on-device **Local Mode**
+- Lucide icons, PWA manifest, Vercel-ready
 
-## What the app does
-
-- **Batch creation** with defaults (sale type, prices, shipping, condition,
-  category/condition IDs, offers) to avoid repetitive entry.
-- **Capture Mode** — fast, thumb-friendly photographing of cards. Group
-  front/back/imperfection photos into single listings, or build **card lots**.
-- **AI draft generation** (mock by default) that returns *structured* fields
-  with **per-field confidence** (High / Medium / Low / Missing).
-- **Review Queue + Listing Review** — edit every field, see confidence badges,
-  missing-field callouts, and a live 80-char title counter.
-- **eBay validation** — catches missing SKUs, duplicate SKUs, titles > 80
-  chars, missing prices/photos/category/condition IDs, and more.
-- **CSV export** — two modes (Internal Full + eBay Seller Hub), photo URLs
-  joined with `|`, configurable field mapping.
-- **Share / Email** the CSV via the device share sheet.
-
----
-
-## MVP limitations (intentionally out of scope)
-
-- ❌ Direct eBay API publishing / eBay OAuth
-- ❌ Live eBay sold-comps pricing / Terapeak
-- ❌ Multi-user login / accounts / subscriptions
-- ❌ Web dashboard (this is mobile-only — do not build a web app)
-- ❌ Background AI jobs
-- ❌ Real multimodal AI extraction unless you wire in your own key
-- ❌ Direct email delivery (uses the share sheet for now)
-
-Search the code for `TODO` to find every documented future-extension point.
-
----
-
-## Tech stack
-
-- **React Native 0.85** + **Expo (SDK 56)** + **React 19** + **TypeScript**
-- **Expo Router** (file-based navigation)
-- **Supabase** (Postgres + Storage) — optional
-- **expo-camera** + **expo-image-picker** (capture)
-- **expo-file-system** + **expo-sharing** (CSV save/share)
-- **expo-image** (cached thumbnails / lazy carousels)
-- **papaparse** (CSV generation)
-- **Zustand** (lightweight, persisted local state)
-
-### Architecture
-
-```
-app/                       Expo Router screens
-  index.tsx                Home / Batch Dashboard
-  batches/new.tsx          Create Batch
-  batches/[batchId]/       Detail · Capture · Finalize(AI) · Review · Export
-  listings/[listingId]/    Listing Review
-components/                Reusable UI (Button, Card, fields, badges, …)
-theme/                     colors / spacing / typography / radius / shadows
-types/                     Strongly-typed domain models
-constants/config.ts        Tunables (title cap, photo-URL limit, bucket, …)
-store/                     Zustand (app store + capture session) + selectors
-services/
-  ai/                      analyze (mock) + buildListingDraft + types
-  camera/                  capturePhoto / pickPhoto
-  storage/                 upload / public URL / delete (Supabase Storage)
-  listing/                 SKU / title / shorten / description / defaults
-  validation/              validateEbayListing / validateBatch / missingFields
-  export/                  CSV generators + field map + save + share
-  supabase/                batches / listings / photos / exportJobs / validation
-data/                      Mock batches / listings / photos / AI results
-lib/                       supabase client, id, format, base64, photo helpers
-supabase/schema.sql        Full SQL setup (tables, indexes, triggers, RLS notes)
-```
-
----
-
-## Installation
+## Quick start (local)
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. (Optional) generate placeholder app icons/splash if missing
-node scripts/generate-assets.js
-
-# 3. Start Expo
-npm start
+cp .env.example .env.local   # then paste your real CARD_API_KEY
+npm run dev
 ```
 
-Then scan the QR code with **Expo Go** (iOS/Android), or press `i` / `a` for a
-simulator/emulator.
+Open http://localhost:3000 (or your LAN IP from a phone). That's it — with only
+`CARD_API_KEY` set, the app runs in **Local Mode**: comps come from the live Card
+API through the Next.js server; team groups, tiers, needs, shows, and purchases
+persist in the browser (`localStorage`) with editable seed data preloaded.
 
-> The app runs immediately with **mock data** — no `.env` or Supabase needed.
+### Verify the Card API first
 
----
-
-## Running locally with Expo
-
-- `npm start` — start the Metro dev server (Expo Go).
-- `npm run ios` / `npm run android` — open a simulator/emulator.
-- `npm run typecheck` — TypeScript check.
-
-### Testing with mock data
-
-On first launch the local store seeds itself with sample batches/listings/photos
-covering: a graded PSA card, a raw single, a card lot, a listing missing its
-set, a title over 80 chars, a listing missing a price, low AI confidence, a
-ready-to-export listing, and a duplicate SKU. This lets you explore every screen
-(including validation + export) before configuring anything.
-
-To wipe local data and re-seed, reinstall the app (or clear Expo Go's data).
-
----
-
-## Supabase setup (optional — for cloud storage + hosted photo URLs)
-
-eBay CSV uploads require **public HTTPS image URLs**. Local `file://` URIs won't
-work for upload, so to produce a truly eBay-ready CSV you need hosted photos —
-that's what Supabase Storage provides.
-
-### ✅ A live database is already provisioned
-
-A Supabase project has been created and fully migrated for this app:
-
-| | |
-|---|---|
-| **Project** | `cardsnap-listings` |
-| **Project ref** | `ltkuipylizzcuxfhtxes` |
-| **API URL** | `https://ltkuipylizzcuxfhtxes.supabase.co` |
-| **Region** | `us-east-1` |
-| **Tables** | `batches`, `listings`, `listing_photos`, `ai_field_confidence`, `export_jobs`, `validation_results` (all created with indexes + `updated_at` triggers) |
-| **Storage** | public bucket `card-listing-photos` (read + anon upload policies) |
-
-To use it, create a `.env` (it is **gitignored**, so it is not in the repo) with
-the project URL + anon key:
-
-```env
-EXPO_PUBLIC_SUPABASE_URL=https://ltkuipylizzcuxfhtxes.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon key — copy from Supabase dashboard → Project Settings → API>
-EXPO_PUBLIC_PHOTO_PUBLIC_HOST=
+```bash
+npx tsx scripts/test-card-api.ts
 ```
 
-Then `npm start` — the app will read/write the live database and upload photos
-to Storage automatically. (The anon key ships in the client bundle by design and
-is safe to expose; it is just not committed to git.)
+Prints record counts, titles, prices, dates, and your remaining rate limit for two
+liquid test queries. If this fails, check `CARD_API_KEY` in `.env.local`.
 
-> ⚠️ **Security note:** Row Level Security is **disabled** on all tables for the
-> no-login MVP, so anyone with the anon key has full read/write access. This is
-> fine for private MVP testing. **Before production**, add auth, enable RLS, and
-> scope each table by owner — see the template at the bottom of
-> [`supabase/schema.sql`](supabase/schema.sql).
+## Environment variables
 
-### Provisioning from scratch (if you want your own project)
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `CARD_API_KEY` | yes | The Card API key. **Server-side only** — never expose as `NEXT_PUBLIC_*`. All requests proxy through `/api/comps/search`. |
+| `NEXT_PUBLIC_SUPABASE_URL` | no | Enables Supabase mode (sync + auth + RLS). |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | Anon/publishable key (safe for the browser; RLS enforces access). |
+| `PSA_API_TOKEN` | no | Enables real PSA cert lookup in Scan Slab. Without it the UI falls back to manual entry — no data is faked. |
 
-1. **Create a Supabase project** at <https://supabase.com>.
-2. **Run the SQL schema**: open the SQL Editor and paste
-   [`supabase/schema.sql`](supabase/schema.sql). This creates all tables,
-   indexes, triggers, and the storage bucket.
-3. **Storage bucket**: the SQL creates a **public** bucket named
-   `card-listing-photos`. (You can also create it manually: Storage → New bucket
-   → name `card-listing-photos` → toggle *Public bucket* ON.)
-4. **Make the bucket public** — acceptable for MVP testing; **reconsider for
-   production** (prefer signed URLs + RLS + auth).
-5. **Add environment variables** — copy `.env.example` to `.env`:
+`.env.local` is gitignored; `.env.example` documents the shape.
 
-   ```env
-   EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
-   EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   # Optional CDN host for photo URLs; otherwise derived from the URL above:
-   EXPO_PUBLIC_PHOTO_PUBLIC_HOST=
-   ```
+## Supabase setup (optional, enables multi-user + auth)
 
-6. **Start the app**: `npm start`.
-7. **Test photo upload**: enter Capture Mode and take a photo. With Supabase
-   configured, photos upload to `card-listing-photos` and get a public URL.
-8. **Test CSV export**: mark a listing Ready → Export → Export eBay CSV → share.
+1. Create a project at [supabase.com](https://supabase.com) (free tier is fine).
+2. Run the migration: paste `supabase/migrations/0001_init.sql` into the SQL editor
+   (or `supabase db push` with the CLI). This creates all tables, indexes, foreign
+   keys, RLS policies, the `card-photos` storage bucket, and a trigger that keeps
+   `team_needs.quantity_acquired` in sync with purchases.
+3. Seed reference data: run `supabase/seed.sql` (sports, ~30 teams, 11 team groups,
+   8 value tiers, per-group needs, pricing rules — all editable in-app).
+4. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env.local`
+   and restart. Sign up at `/login`; the first user can be promoted to admin with
+   `update profiles set role = 'admin' where email = 'you@example.com';`
 
-> The anon key is safe in a client app (gated by RLS in production). **Never**
-> put the `service_role` key in the app.
+Roles: **admin** manages groups/needs/rates/rules; **buyer** searches, views needs,
+and records purchases (RLS restricts buyers to their own purchase rows).
 
----
+## Deploy to Vercel
 
-## How to export a CSV
+```bash
+npx vercel
+```
 
-1. **Capture** cards in a batch.
-2. **Finalize (AI)** — generates drafts + confidence.
-3. **Review** each listing; fix missing/low-confidence fields; **Mark Ready**
-   (blocked if there are hard validation errors or a title > 80 chars).
-4. Open **Export**:
-   - **Validate Batch** to see errors/warnings + the pre-export checklist.
-   - **Export eBay CSV** (only Ready listings; disabled while hard errors
-     exist; warnings require an "Export Anyway" confirmation).
-   - **Export Internal CSV** for a full backup of all fields.
-   - **Share / Email CSV** via the device share sheet.
-   - Optionally **Mark Ready as Exported**.
+Set the same environment variables in the Vercel project settings
+(`CARD_API_KEY`, plus the Supabase pair if used) and deploy.
+No special configuration is needed — API routes run as serverless functions. Note the
+in-memory comp cache and rate-limit display are per-instance on serverless; see
+Limitations.
 
-CSV behavior:
-- One row per listing.
-- Photo URLs joined with `|` (configurable separator/limit in
-  `constants/config.ts`).
-- Titles enforced to ≤ 80 characters (auto-shortened as a final safety net).
+## How it works
 
----
+### Comp engine
+- `lib/card-api.ts` — server-only client for `GET https://www.thecardapi.com/api/v1/market/sales`
+  (auth header `x-market-api-key`), captures `X-RateLimit-*` headers, typed errors.
+- `lib/comps/` — provider architecture (`CompProvider` interface). The Card API is
+  the first provider; Card Ladder / CardHedge / eBay can be added without touching UI.
+- `/api/comps/search` — POST `{query, limit, refresh}` → normalized sales + cache
+  metadata. 6-hour server-side cache per normalized query; **Refresh sales** forces
+  a live fetch; stale cache is served if the live call fails.
 
-## How to update the eBay CSV field mapping
+### Valuation (`lib/valuation.ts`)
+Count / average / median / low / high / last sale over **included** sales only.
+Auto value = median at 3+ comps, average at 1–2. Confidence: high 5+, medium 3–4,
+low 1–2, none 0 — downgraded one step when the coefficient of variation exceeds
+25% (shown as **High price variance**). Manual market value always wins but the
+auto value is preserved on the purchase record.
 
-eBay templates **vary by category** — there is no single universal template.
+### Match scoring (`lib/match.ts`)
+Conservative relevance scoring of each sale title against the parsed query (terms,
+year, grader, grade), with hard penalties for lots/reprints and `-term` exclusions.
+Sales under 80% match start **excluded**; every sale is one tap to include/exclude
+and statistics recompute instantly client-side.
 
-Edit [`services/export/ebayFieldMap.ts`](services/export/ebayFieldMap.ts):
+### Team need engine (`lib/needs-engine.ts`)
+`resolveNeed(marketValue, teamId)` → team group → value tier → need record →
+remaining quantity + payout % + target buy %. Teams are auto-detected from comp
+titles (e.g. "…CHICAGO BEARS…" → Bears → CHICAGO group) and always overridable.
 
-- Update each entry's `header` to match the exact column names from the template
-  you download in **eBay Seller Hub → Reports** for your category.
-- Add/remove rows for category-specific item specifics.
-- Verify **Category ID** and **Condition ID** against eBay's current
-  category/condition tools — don't rely on plain names.
+### Financials (`lib/finance.ts`)
+`expectedPayout = market × payout%`, `targetBuy = market × target%`,
+profit/ROI/acquisition %, and the decision engine:
+ask ≤ target → **BUY**; target < ask ≤ payout → **NEGOTIATE**; ask > payout →
+**PASS**; remaining ≤ 0 → **NO CURRENT NEED** unless overridden.
 
-The photo-URL limit (default **12**) and separator (`|`) live in
-`constants/config.ts`.
+### Screens
+- **Buy** (default): Today strip, quick search, structured Add Card sheet
+  (graders, grades, photos, autocomplete), Scan Slab (photo + PSA cert lookup
+  when configured), comp list, valuation, need panel, decision card with
+  **Save + Add Next** for rapid-fire entry.
+- **Needs**: team-group cards with tier remaining counts, All/High/Low/Closed
+  filters, tap-to-edit; **/admin/needs** is the desktop spreadsheet-style grid.
+- **Purchases**: search + group/show filters, per-row economics, delete, CSV export.
+- **Stats**: Today / Show / All-time aggregates + per-group breakdown.
+- **More**: Show Mode, team-group membership editing, pricing-rule toggles
+  (Leaf −5%, Redemption −8%, Low confidence −3% — off by default), and a
+  developer section showing Card API requests remaining.
 
----
+## Current limitations
 
-## Image handling & performance
+- **Supabase project not provisioned**: the account hit the 2-free-project limit,
+  so the app currently runs in Local Mode. The full schema/seed/RLS and the
+  `SupabaseStore` are implemented and ready — follow "Supabase setup" once a
+  project slot is free. Local Mode data is per-device/per-browser.
+- The comp cache and rate-limit capture are in-memory per server instance; on
+  serverless they reset per cold start. Move to Supabase tables or KV for
+  durable caching.
+- Slab scanning is a placeholder by design: photos are captured and stored, PSA
+  lookup activates only with real credentials, and no OCR/vision runs yet.
+- Comp queries hit the API's default relevance search; pagination beyond the
+  first page (up to 50 sales) isn't fetched.
+- Player-name parsing from a free-text query is heuristic (set names can leak
+  into the player field) — editable in Add Card before saving.
+- Photos in Local Mode are stored as data URIs in `localStorage` (size-limited);
+  Supabase mode should move them to the `card-photos` bucket (bucket + policies
+  are already in the migration, upload wiring is a next step).
+- CSV export only (XLSX later); no Recharts analytics yet.
 
-- Photos upload to the `card-listing-photos` bucket; public URLs are stored on
-  each photo row and used in the eBay CSV.
-- Capture prioritizes **sharp, readable** images (quality is tunable in
-  `constants/config.ts`). See comments in `services/camera/*` — the native
-  system camera may apply extra computational photography, so the capture path
-  is intentionally easy to swap (`expo-camera` ↔ `expo-image-picker`).
-- Lists use **thumbnails** (`PhotoThumbnail` via `expo-image`); full-resolution
-  images load only in the focused **Listing Review** carousel. The app is built
-  to comfortably handle **200+ photos per batch** (virtualized lists, cached
-  images, ephemeral capture buffers).
+## Recommended next steps
 
----
-
-## Known limitations
-
-- Without Supabase, photos stay as local `file://` URIs — great for testing the
-  workflow, but those URLs are **not** valid for an actual eBay upload (export
-  validation will warn you).
-- AI extraction is a **mock** by default (returns realistic sample data). Wire a
-  real provider in `services/ai/analyzeCardImages.ts`.
-- The device share sheet handles "email" — there is no direct mail delivery yet.
-
----
-
-## Future roadmap
-
-- Direct eBay API integration + OAuth; category / condition ID lookup
-- eBay business-policy / shipping-profile sync
-- Sold-comps pricing assistant (Terapeak if available)
-- True direct email export (Resend / SendGrid via Supabase Edge Functions)
-- Real multimodal AI extraction; barcode/OCR + slab-label OCR
-- Inventory location tracking; multi-batch search; template management
-- Listing performance tracking; relisting unsold inventory; bulk live edits
-
----
-
-## License
-
-Private MVP. Not affiliated with eBay.
+1. Free a Supabase slot (or upgrade), run migration + seed, flip on Supabase mode,
+   and wire photo uploads to Storage.
+2. Durable comp cache (`comp_searches`/`sales` tables are already in the schema).
+3. PSA API credentials → activate `lib/grading/psa-provider.ts`; then OCR on the
+   slab photo (cert number → automatic lookup → prefilled card).
+4. Second comp provider (eBay/Card Ladder) + provider blending and per-provider
+   match weighting.
+5. Pricing-rule engine v2: tag detection from titles (auto-flag Leaf/redemptions),
+   per-tier rule overrides.
+6. Offline queue for purchases made while venue connectivity drops mid-save.
