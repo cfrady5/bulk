@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { psaProvider } from '@/lib/grading/psa-provider'
+import { PsaAccessError, psaProvider } from '@/lib/grading/psa-provider'
 
 export const runtime = 'nodejs'
 
@@ -36,7 +36,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Cert not found' }, { status: 404 })
     }
     return NextResponse.json({ cert })
-  } catch {
+  } catch (err) {
+    if (err instanceof PsaAccessError) {
+      return NextResponse.json(
+        {
+          error: `PSA declined the request: "${err.message}" — your PSA account likely still needs API approval. Enter the card manually for now.`,
+        },
+        { status: 403 },
+      )
+    }
     return NextResponse.json({ error: 'PSA lookup failed' }, { status: 502 })
   }
 }
